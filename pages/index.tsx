@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { TitledInput } from "../components/TitledInput/TitledInput";
-import { TitledRadioInput } from "../components/TitledRadioInput/TitledRadioInput";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -37,6 +36,7 @@ const Home: NextPage = () => {
   };
 
   const updateYeastBoostPreference = (input: boolean): void => {
+    console.log("What was the input", input);
     setYeastBoost(input);
   };
 
@@ -78,8 +78,9 @@ const Home: NextPage = () => {
           title="Desired starter (%)"
           valueUpdated={updateDesiredStarter}
         />
-        <TitledRadioInput
-          title="Yeast boost?"
+        <TitledInput
+          title="Yeast Boost?"
+          type="checkbox"
           valueUpdated={updateYeastBoostPreference}
         />
       </div>
