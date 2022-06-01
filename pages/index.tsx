@@ -2,10 +2,11 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { TitledInput } from "../components/TitledInput/TitledInput";
+import { Quantities } from "../components/Quantities/Quantities";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const [doughHydration, setDoughHydration] = useState(0);
+  const [desiredDoughHydration, setDesiredDoughHydration] = useState(0);
   const [levainHydration, setLevainHydration] = useState(0);
   const [desiredFlour, setDesiredFlour] = useState(0);
   const [desiredSalt, setDesiredSalt] = useState(0);
@@ -16,7 +17,7 @@ const Home: NextPage = () => {
     parseFloat(input) / 100;
 
   const updateDesiredHydration = (input: string): void => {
-    setDoughHydration(convertInputStringToPercentage(input));
+    setDesiredDoughHydration(convertInputStringToPercentage(input));
   };
 
   const updateCurrentLevainHydration = (input: string): void => {
@@ -43,16 +44,10 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Dough Calculator</title>
+        <title>Sourdough Calculator</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>Dough Calculator</h1>
-      <p>Dough Hydration: {doughHydration}</p>
-      <p>Levain Hydration: {levainHydration}</p>
-      <p>Flour: {desiredFlour}</p>
-      <p>Salt: {desiredSalt}</p>
-      <p>Starter: {desiredStarter}</p>
-      <p>Yeast Boost: {yeastBoost.toString()}</p>
+      <h1>Sourdough Calculator</h1>
       <div className={styles.container}>
         <TitledInput
           title="Desired Dough Hydration (%)"
@@ -75,7 +70,7 @@ const Home: NextPage = () => {
           valueUpdated={updateDesiredSalt}
         />
         <TitledInput
-          title="Desired starter (%)"
+          title="Desired Levain (%)"
           valueUpdated={updateDesiredStarter}
         />
         <TitledInput
@@ -84,6 +79,14 @@ const Home: NextPage = () => {
           valueUpdated={updateYeastBoostPreference}
         />
       </div>
+      <Quantities
+        desiredTotalFlour={desiredFlour}
+        desiredDoughHydration={desiredDoughHydration}
+        desiredLevainAmount={desiredStarter}
+        currentLevainHydration={levainHydration}
+        desiredSalt={desiredSalt}
+        yeastBoost={yeastBoost}
+      ></Quantities>
     </div>
   );
 };
