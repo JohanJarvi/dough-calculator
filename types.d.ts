@@ -5,3 +5,12 @@ export type Ingredients = {
     levain: number;
     instantYeast?: number;
 }
+
+export enum CalculatorInputs {
+    TotalFlour,
+    DoughHydration,
+    LevainHydration,
+    Salt,
+    Levain,
+    Yeast
+}

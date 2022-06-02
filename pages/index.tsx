@@ -4,7 +4,7 @@ import { useState } from "react";
 import { TitledInput } from "../components/TitledInput/TitledInput";
 import { Quantities } from "../components/Quantities/Quantities";
 import styles from "../styles/Home.module.css";
-import { Ingredients } from "../types";
+import { CalculatorInputs, Ingredients } from "../types.d";
 import { FlourQuantities } from "../components/FlourQuantities/FlourQuantities";
 
 const Home: NextPage = () => {
@@ -48,32 +48,38 @@ const Home: NextPage = () => {
       <h1>Sourdough Calculator</h1>
       <div className={styles.container}>
         <TitledInput
+          id={CalculatorInputs.TotalFlour}
+          title="Desired total flour (g)"
+          valueUpdated={updateDesiredFlour}
+        />
+        <TitledInput
+          id={CalculatorInputs.DoughHydration}
           title="Desired Dough Hydration (%)"
           valueUpdated={updateDesiredHydration}
           min="0"
           max="100"
         />
         <TitledInput
-          title="Current Levain Hydration (%)"
+          id={CalculatorInputs.LevainHydration}
+          title="Desired Levain Hydration (%)"
           valueUpdated={updateCurrentLevainHydration}
           min="0"
           max="200"
         />
         <TitledInput
-          title="Desired additional flour (g)"
-          valueUpdated={updateDesiredFlour}
-        />
-        <TitledInput
+          id={CalculatorInputs.Salt}
           title="Desired salt (%)"
           valueUpdated={updateDesiredSalt}
         />
         <TitledInput
+          id={CalculatorInputs.Levain}
           title="Desired Levain (%)"
           valueUpdated={updateDesiredStarter}
           min="0"
           max="100"
         />
         <TitledInput
+          id={CalculatorInputs.Yeast}
           title="Yeast Boost?"
           type="checkbox"
           valueUpdated={updateYeastBoostPreference}
