@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Ingredients } from "../../types";
+import styles from "./Quantities.module.css";
 
 export const Quantities = (props: {
   desiredTotalFlour: number;
@@ -144,20 +145,36 @@ export const Quantities = (props: {
   }, [props, recipe]);
 
   return (
-    <div>
-      <p>Flour: {flour ?? "Additional parameters required"}</p>
-      <p>
-        Water:{" "}
+    <div className={styles.container}>
+      <div className={styles.heading}>Base recipe</div>
+      <div className={styles.item}>
+        <span className={styles.descriptor}>Flour:</span>{" "}
+        {flour ?? "Additional parameters required"}
+      </div>
+      <div className={styles.item}>
+        <span className={styles.descriptor}>Water:</span>{" "}
         {water >= 0
           ? water ?? "Additional parameters required"
           : "Your levain is already too hydrated to get water amount, please lower levain hydration if you wish to have such a low dough hydration."}
-      </p>
-      <p>Salt: {salt || "Additional parameters required"}</p>
-      <p>Levain: {levain || "Additional parameters required"}</p>
+      </div>
+      <div className={styles.item}>
+        <span className={styles.descriptor}>Salt:</span>{" "}
+        {salt || "Additional parameters required"}
+      </div>
+      <div className={styles.item}>
+        <span className={styles.descriptor}>Levain:</span>{" "}
+        {levain || "Additional parameters required"}
+      </div>
       {props.yeastBoost ? (
-        <p>Instant yeast: {instantYeast || "Additional parameters required"}</p>
+        <div className={styles.item}>
+          <span className={styles.descriptor}>Instant yeast:</span>{" "}
+          {instantYeast || "Additional parameters required"}
+        </div>
       ) : null}
-      <p>Total dough weight: {totalWeight}</p>
+      <div className={styles.item}>
+        <span className={styles.descriptor}>Total Dough Weight:</span>{" "}
+        {totalWeight}
+      </div>
     </div>
   );
 };

@@ -18,13 +18,10 @@ export const TitledInput = (props: {
 
   return (
     <div className={styles.container}>
-      {props.type !== "checkbox" ? (
-        <div className={styles.item}>{props.title}</div>
-      ) : null}
+      <div className={styles.item}>{props.title}</div>
       <div className={styles.item}>
-        {props.type === "checkbox" ? <span>{props.title}</span> : null}
         <input
-          className={styles.input}
+          className={props.type === "checkbox" ? styles.checkbox : styles.input}
           type={props.type || "number"}
           min={props.min}
           max={props.max}

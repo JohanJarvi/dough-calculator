@@ -88,7 +88,9 @@ const Home: NextPage = () => {
         yeastBoost={yeastBoost}
         calculatedQuantities={handleCalculatedQuantities}
       />
-      <FlourQuantities flour={recipe?.flour || 0} />
+      <div className={styles.item}>
+        <FlourQuantities flour={recipe?.flour || 0} />
+      </div>
     </div>
   );
 };
