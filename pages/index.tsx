@@ -4,6 +4,8 @@ import { useState } from "react";
 import { TitledInput } from "../components/TitledInput/TitledInput";
 import { Quantities } from "../components/Quantities/Quantities";
 import styles from "../styles/Home.module.css";
+import { Ingredients } from "../types";
+import { FlourQuantities } from "../components/FlourQuantities/FlourQuantities";
 
 const Home: NextPage = () => {
   const [desiredDoughHydration, setDesiredDoughHydration] = useState(0);
@@ -12,34 +14,30 @@ const Home: NextPage = () => {
   const [desiredSalt, setDesiredSalt] = useState(0);
   const [desiredStarter, setDesiredStarter] = useState(0);
   const [yeastBoost, setYeastBoost] = useState(false);
+  const [recipe, setRecipe] = useState<Ingredients>();
 
   const convertInputStringToPercentage = (input: string): number =>
     parseFloat(input) / 100;
 
-  const updateDesiredHydration = (input: string): void => {
+  const updateDesiredHydration = (input: string) =>
     setDesiredDoughHydration(convertInputStringToPercentage(input));
-  };
 
-  const updateCurrentLevainHydration = (input: string): void => {
+  const updateCurrentLevainHydration = (input: string) =>
     setLevainHydration(convertInputStringToPercentage(input));
-  };
 
-  const updateDesiredFlour = (input: string): void => {
+  const updateDesiredFlour = (input: string) =>
     setDesiredFlour(parseFloat(input));
-  };
 
-  const updateDesiredSalt = (input: string): void => {
+  const updateDesiredSalt = (input: string) =>
     setDesiredSalt(convertInputStringToPercentage(input));
-  };
 
-  const updateDesiredStarter = (input: string): void => {
+  const updateDesiredStarter = (input: string) =>
     setDesiredStarter(convertInputStringToPercentage(input));
-  };
 
-  const updateYeastBoostPreference = (input: boolean): void => {
-    console.log("What was the input", input);
-    setYeastBoost(input);
-  };
+  const updateYeastBoostPreference = (input: boolean) => setYeastBoost(input);
+
+  const handleCalculatedQuantities = (ingredients: Ingredients) =>
+    setRecipe(ingredients);
 
   return (
     <div>
@@ -59,10 +57,10 @@ const Home: NextPage = () => {
           title="Current Levain Hydration (%)"
           valueUpdated={updateCurrentLevainHydration}
           min="0"
-          max="100"
+          max="200"
         />
         <TitledInput
-          title="Desired total flour (g)"
+          title="Desired additional flour (g)"
           valueUpdated={updateDesiredFlour}
         />
         <TitledInput
@@ -72,6 +70,8 @@ const Home: NextPage = () => {
         <TitledInput
           title="Desired Levain (%)"
           valueUpdated={updateDesiredStarter}
+          min="0"
+          max="100"
         />
         <TitledInput
           title="Yeast Boost?"
@@ -86,7 +86,9 @@ const Home: NextPage = () => {
         currentLevainHydration={levainHydration}
         desiredSalt={desiredSalt}
         yeastBoost={yeastBoost}
-      ></Quantities>
+        calculatedQuantities={handleCalculatedQuantities}
+      />
+      <FlourQuantities flour={recipe?.flour || 0} />
     </div>
   );
 };

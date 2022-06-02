@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Ingredients } from "../../types";
 
 export const Quantities = (props: {
   desiredTotalFlour: number;
@@ -7,12 +8,15 @@ export const Quantities = (props: {
   currentLevainHydration: number;
   desiredSalt: number;
   yeastBoost?: boolean;
+  calculatedQuantities?: Function;
 }) => {
   const [flour, setFlour] = useState(0);
   const [water, setWater] = useState(0);
   const [salt, setSalt] = useState("");
   const [levain, setLevain] = useState(0);
   const [instantYeast, setInstantYeast] = useState("");
+  const [recipe, setRecipe] = useState<Ingredients>();
+  const [totalWeight, setTotalWeight] = useState(0);
 
   useEffect(() => {
     const calculateLevainAmount = (
@@ -41,6 +45,7 @@ export const Quantities = (props: {
       desiredLevainAmount: number,
       currentLevainHydration: number
     ) => {
+      const desiredWaterInDough = desiredTotalFlour * desiredDoughHydration;
       const levainAmountInGrams = calculateLevainAmount(
         desiredTotalFlour,
         desiredLevainAmount
@@ -48,7 +53,7 @@ export const Quantities = (props: {
       const waterContentOfLevain =
         levainAmountInGrams * (0.5 * currentLevainHydration);
 
-      return Math.floor(flour * desiredDoughHydration - waterContentOfLevain);
+      return Math.floor(desiredWaterInDough - waterContentOfLevain);
     };
 
     const calculateSaltAmount = (
@@ -56,34 +61,75 @@ export const Quantities = (props: {
       desiredSalt: number
     ): number => desiredTotalFlour * desiredSalt;
 
-    setFlour(
-      calculateFlourAmount(
-        props.desiredTotalFlour,
-        props.desiredLevainAmount,
-        props.currentLevainHydration
+    const createRecipe = (
+      flour: number,
+      water: number,
+      salt: number,
+      levain: number,
+      instantYeast?: number
+    ): Ingredients => ({
+      flour,
+      water,
+      salt,
+      levain,
+      instantYeast,
+    });
+
+    const flourAmount = calculateFlourAmount(
+      props.desiredTotalFlour,
+      props.desiredLevainAmount,
+      props.currentLevainHydration
+    );
+
+    setFlour(flourAmount);
+
+    const waterAmount = calculateWaterAmount(
+      props.desiredTotalFlour,
+      props.desiredDoughHydration,
+      props.desiredLevainAmount,
+      props.currentLevainHydration
+    );
+
+    setWater(waterAmount);
+
+    const saltAmount = calculateSaltAmount(
+      props.desiredTotalFlour,
+      props.desiredSalt
+    ).toFixed(1);
+
+    setSalt(saltAmount);
+
+    const levainAmount = calculateLevainAmount(
+      props.desiredTotalFlour,
+      props.desiredLevainAmount
+    );
+
+    setLevain(Math.floor(levainAmount));
+
+    const instantYeastAmount = (props.desiredTotalFlour * 0.002).toFixed(1);
+
+    setInstantYeast(instantYeastAmount);
+
+    setTotalWeight(
+      Math.floor(
+        flourAmount +
+          waterAmount +
+          levainAmount +
+          parseFloat(saltAmount) +
+          parseFloat(instantYeastAmount)
       )
     );
 
-    setWater(
-      calculateWaterAmount(
-        props.desiredTotalFlour,
-        props.desiredDoughHydration,
-        props.desiredLevainAmount,
-        props.currentLevainHydration
+    setRecipe(
+      createRecipe(
+        flourAmount,
+        waterAmount,
+        parseFloat(saltAmount),
+        levainAmount,
+        parseFloat(instantYeastAmount)
       )
     );
-
-    setSalt(
-      calculateSaltAmount(props.desiredTotalFlour, props.desiredSalt).toFixed(1)
-    );
-
-    setLevain(
-      calculateLevainAmount(props.desiredTotalFlour, props.desiredLevainAmount)
-    );
-
-    setInstantYeast((props.desiredTotalFlour * 0.002).toFixed(1));
   }, [
-    flour,
     props.desiredTotalFlour,
     props.desiredDoughHydration,
     props.desiredLevainAmount,
@@ -91,23 +137,27 @@ export const Quantities = (props: {
     props.desiredSalt,
   ]);
 
+  useEffect(() => {
+    if (props.calculatedQuantities) {
+      props.calculatedQuantities(recipe);
+    }
+  }, [props, recipe]);
+
   return (
     <div>
-      <p>Flour: {flour + "g" || "Additional parameters required"}</p>
+      <p>Flour: {flour ?? "Additional parameters required"}</p>
       <p>
         Water:{" "}
         {water >= 0
-          ? water + "g" || "Additional parameters required"
+          ? water ?? "Additional parameters required"
           : "Your levain is already too hydrated to get water amount, please lower levain hydration if you wish to have such a low dough hydration."}
       </p>
-      <p>Salt: {salt + "g" || "Additional parameters required"}</p>
-      <p>Levain: {levain + "g" || "Additional parameters required"}</p>
+      <p>Salt: {salt || "Additional parameters required"}</p>
+      <p>Levain: {levain || "Additional parameters required"}</p>
       {props.yeastBoost ? (
-        <p>
-          Instant yeast:{" "}
-          {instantYeast + "g" || "Additional parameters required"}
-        </p>
+        <p>Instant yeast: {instantYeast || "Additional parameters required"}</p>
       ) : null}
+      <p>Total dough weight: {totalWeight}</p>
     </div>
   );
 };
