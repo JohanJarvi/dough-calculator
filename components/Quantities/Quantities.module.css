@@ -15,3 +15,17 @@
 .descriptor {
   font-weight: bold;
 }
+
+.button {
+  display: block;
+  margin-top: 5px;
+  background-color: lightblue;
+  border: 1px solid lightblue;
+  border-radius: 5px;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid black;
+}

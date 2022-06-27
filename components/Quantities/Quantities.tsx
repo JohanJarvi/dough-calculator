@@ -144,6 +144,16 @@ export const Quantities = (props: {
     }
   }, [props, recipe]);
 
+  const showHowToBuildLevainAlert = () => {
+    const flour = levain * 0.4;
+    const water = flour;
+    alert(
+      `Levain - flour: ${flour}, water: ${water}, starter = ${
+        levain - (water + flour)
+      }`
+    );
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.heading}>Base recipe</div>
@@ -164,6 +174,9 @@ export const Quantities = (props: {
       <div className={styles.item}>
         <span className={styles.descriptor}>Levain:</span>{" "}
         {levain || "Additional parameters required"}
+        <button className={styles.button} onClick={showHowToBuildLevainAlert}>
+          Click for Levain recipe
+        </button>
       </div>
       {props.yeastBoost ? (
         <div className={styles.item}>
