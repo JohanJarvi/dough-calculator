@@ -163,17 +163,32 @@ export const Quantities = (props: {
     const flour = levain * 0.4;
     const water = flour;
     return (
-      <Text>
-        Combine {levain - (water + flour)}g of starter with {water}g of water
-        and stir that together.
-        <br />
-        <br />
-        Once milky add in {flour}g of flour and stir until a thick fully
-        combined paste is formed.
-        <br />
-        <br />
-        That&apos;s it!
-      </Text>
+      <>
+        <Text>
+          <strong>Flour: </strong>
+          {flour}
+        </Text>
+        <Text>
+          <strong>Water: </strong>
+          {water}
+        </Text>
+        <Text>
+          <strong>Starter: </strong>
+          {levain - (water + flour)}
+        </Text>
+        <Divider mb={4} mt={4} />
+        <Text>
+          Combine {levain - (water + flour)}g of starter with {water}g of water
+          and stir that together.
+          <br />
+          <br />
+          Once milky add in {flour}g of flour and stir until a thick fully
+          combined paste is formed.
+          <br />
+          <br />
+          That&apos;s it!
+        </Text>
+      </>
     );
   };
 
