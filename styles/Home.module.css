@@ -1,8 +1,0 @@
-.container {
-  display: flex;
-  flex-flow: wrap;
-}
-
-.item {
-  margin-right: 10px;
-}

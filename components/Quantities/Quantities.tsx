@@ -1,6 +1,14 @@
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Flex,
+  Heading,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Ingredients } from "../../types";
-import styles from "./Quantities.module.css";
 
 export const Quantities = (props: {
   desiredTotalFlour: number;
@@ -155,39 +163,40 @@ export const Quantities = (props: {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.heading}>Base recipe</div>
-      <div className={styles.item}>
-        <span className={styles.descriptor}>Flour:</span>{" "}
-        {flour ?? "Additional parameters required"}
-      </div>
-      <div className={styles.item}>
-        <span className={styles.descriptor}>Water:</span>{" "}
+    <Container>
+      <Heading as="h2" size="lg" mb={4}>
+        Base Recipe:
+      </Heading>
+      <Text mb={4}>
+        <strong>Flour:</strong> {flour ?? "Additional parameters required"}
+      </Text>
+      <Text mb={4}>
+        <strong>Water:</strong>{" "}
         {water >= 0
           ? water ?? "Additional parameters required"
           : "Your levain is already too hydrated to get water amount, please lower levain hydration if you wish to have such a low dough hydration."}
-      </div>
-      <div className={styles.item}>
-        <span className={styles.descriptor}>Salt:</span>{" "}
-        {salt || "Additional parameters required"}
-      </div>
-      <div className={styles.item}>
-        <span className={styles.descriptor}>Levain:</span>{" "}
-        {levain || "Additional parameters required"}
-        <button className={styles.button} onClick={showHowToBuildLevainAlert}>
-          Click for Levain recipe
-        </button>
-      </div>
+      </Text>
+      <Text mb={4}>
+        <strong>Salt:</strong> {salt ?? "Additional parameters required"}
+      </Text>
+      <Flex mb={4}>
+        <Text>
+          <strong>Levain:</strong> {levain ?? "Additional parameters required"}
+        </Text>
+        <Button ml={4} size="xs" onClick={showHowToBuildLevainAlert}>
+          Click for Levain Recipe
+        </Button>
+      </Flex>
       {props.yeastBoost ? (
-        <div className={styles.item}>
-          <span className={styles.descriptor}>Instant yeast:</span>{" "}
-          {instantYeast || "Additional parameters required"}
-        </div>
+        <Text mb={4}>
+          <strong>Instant yeast:</strong>{" "}
+          {instantYeast ?? "Additional parameters required"}
+        </Text>
       ) : null}
-      <div className={styles.item}>
-        <span className={styles.descriptor}>Total Dough Weight:</span>{" "}
-        {totalWeight}
-      </div>
-    </div>
+      <Divider mb={4} />
+      <Text mb={4}>
+        <strong>Total dough weight:</strong> {totalWeight}
+      </Text>
+    </Container>
   );
 };
