@@ -7,7 +7,7 @@ export type Ingredients = {
 }
 
 export enum CalculatorInputs {
-    TotalFlour,
+    TotalFlour = "total_flour",
     DoughHydration,
     LevainHydration,
     Salt,
