@@ -5,6 +5,13 @@ import {
   Divider,
   Flex,
   Heading,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -152,13 +159,36 @@ export const Quantities = (props: {
     }
   }, [props, recipe]);
 
-  const showHowToBuildLevainAlert = () => {
+  const getLevainRecipeBlurb = (): any => {
     const flour = levain * 0.4;
     const water = flour;
-    alert(
-      `Levain - flour: ${flour}, water: ${water}, starter = ${
-        levain - (water + flour)
-      }`
+    return (
+      <>
+        <Text>
+          <strong>Flour: </strong>
+          {flour}
+        </Text>
+        <Text>
+          <strong>Water: </strong>
+          {water}
+        </Text>
+        <Text>
+          <strong>Starter: </strong>
+          {levain - (water + flour)}
+        </Text>
+        <Divider mb={4} mt={4} />
+        <Text>
+          Combine {levain - (water + flour)}g of starter with {water}g of water
+          and stir that together.
+          <br />
+          <br />
+          Once milky add in {flour}g of flour and stir until a thick fully
+          combined paste is formed.
+          <br />
+          <br />
+          That&apos;s it!
+        </Text>
+      </>
     );
   };
 
@@ -183,9 +213,22 @@ export const Quantities = (props: {
         <Text>
           <strong>Levain:</strong> {levain ?? "Additional parameters required"}
         </Text>
-        <Button ml={4} size="xs" onClick={showHowToBuildLevainAlert}>
-          Click for Levain Recipe
-        </Button>
+
+        <Popover>
+          <PopoverTrigger>
+            <Button ml={4} size="xs">
+              Click for Levain Recipe
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverHeader>
+              <strong>How to build your levain</strong>
+            </PopoverHeader>
+            <PopoverBody>{getLevainRecipeBlurb()}</PopoverBody>
+          </PopoverContent>
+        </Popover>
       </Flex>
       {props.yeastBoost ? (
         <Text mb={4}>
