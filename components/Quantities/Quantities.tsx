@@ -7,7 +7,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import HelpIcon from "@mui/icons-material/help";
+import { Help } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { Ingredients } from "../../types";
 
@@ -221,7 +221,7 @@ export const Quantities = (props: {
           {levain ? `${levain}g` : "Additional parameters required"}
         </Typography>
         <IconButton onClick={() => setLevainDialogOpen(true)}>
-          <HelpIcon fontSize="small" />
+          <Help fontSize="small" />
         </IconButton>
         {props.yeastBoost ? (
           <Typography>
