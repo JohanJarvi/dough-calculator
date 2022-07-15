@@ -1,18 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Quantities } from "../components/Quantities/Quantities";
-import { CalculatorInputs, Ingredients } from "../types.d";
+import { Ingredients } from "../types.d";
 import { FlourQuantities } from "../components/FlourQuantities/FlourQuantities";
-import {
-  Box,
-  Container,
-  Heading,
-  Input,
-  SimpleGrid,
-  Switch,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Grid, Switch, TextField, Typography } from "@mui/material";
 
 const Home: NextPage = () => {
   const [desiredDoughHydration, setDesiredDoughHydration] = useState(0);
@@ -50,40 +42,65 @@ const Home: NextPage = () => {
     setRecipe(ingredients);
 
   return (
-    <Container maxW="4xl">
+    <>
       <Head>
         <title>Sourdough Calculator</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Heading as="h1" size="2xl" m={4}>
-        Sourdough Calculator
-      </Heading>
-      <SimpleGrid minChildWidth="200px" spacing={4} m={4}>
-        <Box>
-          <Text mb={2}>Desired total flour (g):</Text>
-          <Input type="number" onChange={updateDesiredFlour} />
-        </Box>
-        <Box>
-          <Text mb={2}>Desired dough hydration (%):</Text>
-          <Input type="number" onChange={updateDesiredHydration} />
-        </Box>
-        <Box>
-          <Text mb={2}>Current levain hydration (%):</Text>
-          <Input type="number" onChange={updateCurrentLevainHydration} />
-        </Box>
-        <Box>
-          <Text mb={2}>Desired salt (%):</Text>
-          <Input type="number" onChange={updateDesiredSalt} />
-        </Box>
-        <Box>
-          <Text mb={2}>Desired levain (%):</Text>
-          <Input type="number" onChange={updateDesiredStarter} />
-        </Box>
-        <Box>
-          <Text mb={2}>Boost with instant yeast?</Text>
-          <Switch onChange={updateYeastBoostPreference}></Switch>
-        </Box>
-      </SimpleGrid>
+      <Box sx={{ backgroundColor: "secondary.main" }} padding={2}>
+        <Typography variant="h2" marginBottom={2}>
+          Sourdough Calculator
+        </Typography>
+        <Grid container spacing={2} marginBottom={2}>
+          <Grid item>
+            <TextField
+              id="desired-flour"
+              label="Desired total flour (g)"
+              variant="outlined"
+              onChange={updateDesiredFlour}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              id="desired-dough-hydration"
+              label="Desired dough hydration (%)"
+              variant="outlined"
+              onChange={updateDesiredHydration}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              id="current-levain-hydration"
+              label="Target levain hydration (%)"
+              variant="outlined"
+              onChange={updateCurrentLevainHydration}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              id="desired-salt"
+              label="Desired salt (%)"
+              variant="outlined"
+              onChange={updateDesiredSalt}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              id="desired-levain"
+              label="Desired levain amount (%)"
+              variant="outlined"
+              onChange={updateDesiredStarter}
+            />
+          </Grid>
+          <Grid item>
+            <Typography>Yeast boost desired?</Typography>
+            <Switch
+              checked={yeastBoost}
+              onChange={updateYeastBoostPreference}
+            />
+          </Grid>
+        </Grid>
+      </Box>
       <Quantities
         desiredTotalFlour={desiredFlour}
         desiredDoughHydration={desiredDoughHydration}
@@ -94,7 +111,7 @@ const Home: NextPage = () => {
         calculatedQuantities={handleCalculatedQuantities}
       />
       <FlourQuantities flour={recipe?.flour || 0} />
-    </Container>
+    </>
   );
 };
 

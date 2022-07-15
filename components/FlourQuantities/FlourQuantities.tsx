@@ -1,16 +1,22 @@
-import { Container, Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Grid, Typography } from "@mui/material";
 
 export const FlourQuantities = (props: { flour: number }) => {
   return (
-    <Container maxW="4xl">
-      <Heading mb={4} as="h2" size="lg" alignSelf="center">
-        Country bread
-      </Heading>
-      <SimpleGrid columns={[1, 2, 3]}>
-        <Text>White Flour: {Math.round(props.flour * 0.8)}</Text>
-        <Text>Whole Wheat Flour: {Math.round(props.flour * 0.15)}</Text>
-        <Text>Rye Flour: {Math.round(props.flour * 0.05)}</Text>
-      </SimpleGrid>
-    </Container>
+    <Box padding={2} sx={{ backgroundColor: "secondary.main" }}>
+      <Typography variant="h4">Country bread</Typography>
+      <Grid container spacing={2}>
+        <Grid item>
+          <Typography>White Flour: {Math.round(props.flour * 0.8)}</Typography>
+        </Grid>
+        <Grid item>
+          <Typography>
+            Whole Wheat Flour: {Math.round(props.flour * 0.15)}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography>Rye Flour: {Math.round(props.flour * 0.05)}</Typography>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };

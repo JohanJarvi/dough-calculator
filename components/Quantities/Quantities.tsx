@@ -1,19 +1,13 @@
 import {
   Box,
-  Button,
   Container,
+  Dialog,
+  DialogTitle,
   Divider,
-  Flex,
-  Heading,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-  Text,
-} from "@chakra-ui/react";
+  IconButton,
+  Typography,
+} from "@mui/material";
+import HelpIcon from "@mui/icons-material/help";
 import { useEffect, useState } from "react";
 import { Ingredients } from "../../types";
 
@@ -33,6 +27,7 @@ export const Quantities = (props: {
   const [instantYeast, setInstantYeast] = useState("");
   const [recipe, setRecipe] = useState<Ingredients>();
   const [totalWeight, setTotalWeight] = useState(0);
+  const [levainDialogOpen, setLevainDialogOpen] = useState(false);
 
   useEffect(() => {
     const calculateLevainAmount = (
@@ -159,87 +154,93 @@ export const Quantities = (props: {
     }
   }, [props, recipe]);
 
+  const handleCloseLevainDialog = () => setLevainDialogOpen(false);
+
   const getLevainRecipeBlurb = (): any => {
     const flour = levain * 0.4;
     const water = flour;
     return (
-      <>
-        <Text>
-          <strong>Flour: </strong>
-          {flour}
-        </Text>
-        <Text>
-          <strong>Water: </strong>
-          {water}
-        </Text>
-        <Text>
-          <strong>Starter: </strong>
-          {levain - (water + flour)}
-        </Text>
-        <Divider mb={4} mt={4} />
-        <Text>
-          Combine {levain - (water + flour)}g of starter with {water}g of water
-          and stir that together.
-          <br />
-          <br />
-          Once milky add in {flour}g of flour and stir until a thick fully
-          combined paste is formed.
-          <br />
-          <br />
-          That&apos;s it!
-        </Text>
-      </>
+      <Container>
+        <Box marginBottom={2}>
+          <Typography>
+            <strong>Flour: </strong>
+            {flour}g
+          </Typography>
+          <Typography>
+            <strong>Water: </strong>
+            {water}g
+          </Typography>
+          <Typography>
+            <strong>Starter: </strong>
+            {levain - (water + flour)}g
+          </Typography>
+        </Box>
+        <Divider light />
+        <Box marginTop={2} marginBottom={2}>
+          <Typography>
+            Combine {levain - (water + flour)}g of starter with {water}g of
+            water and stir that together.
+            <br />
+            <br />
+            Once milky add in {flour}g of flour and stir until a thick fully
+            combined paste is formed.
+            <br />
+            <br />
+            That&apos;s it!
+          </Typography>
+        </Box>
+      </Container>
     );
   };
 
   return (
     <Container>
-      <Heading as="h2" size="lg" mb={4}>
-        Base Recipe:
-      </Heading>
-      <Text mb={4}>
-        <strong>Flour:</strong> {flour ?? "Additional parameters required"}
-      </Text>
-      <Text mb={4}>
-        <strong>Water:</strong>{" "}
-        {water >= 0
-          ? water ?? "Additional parameters required"
-          : "Your levain is already too hydrated to get water amount, please lower levain hydration if you wish to have such a low dough hydration."}
-      </Text>
-      <Text mb={4}>
-        <strong>Salt:</strong> {salt ?? "Additional parameters required"}
-      </Text>
-      <Flex mb={4}>
-        <Text>
-          <strong>Levain:</strong> {levain ?? "Additional parameters required"}
-        </Text>
-
-        <Popover>
-          <PopoverTrigger>
-            <Button ml={4} size="xs">
-              Click for Levain Recipe
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverHeader>
-              <strong>How to build your levain</strong>
-            </PopoverHeader>
-            <PopoverBody>{getLevainRecipeBlurb()}</PopoverBody>
-          </PopoverContent>
-        </Popover>
-      </Flex>
-      {props.yeastBoost ? (
-        <Text mb={4}>
-          <strong>Instant yeast:</strong>{" "}
-          {instantYeast ?? "Additional parameters required"}
-        </Text>
-      ) : null}
-      <Divider mb={4} />
-      <Text mb={4}>
+      <Box marginBottom={2}>
+        <Typography variant="h4">Base recipe</Typography>
+        <Typography variant="h6" marginBottom={2}>
+          Recipe is all in grams
+        </Typography>
+        <Typography>
+          <strong>Flour:</strong>{" "}
+          {flour ? `${flour}g` : "Additional parameters required"}
+        </Typography>
+        <Typography>
+          <strong>Water:</strong>{" "}
+          {water >= 0
+            ? water
+              ? `${water}g`
+              : "Additional parameters required"
+            : "Your levain is already too hydrated to get water amount, please lower levain hydration if you wish to have such a low dough hydration."}
+        </Typography>
+        <Typography>
+          <strong>Salt:</strong>{" "}
+          {salt ? `${salt}g` : "Additional parameters required"}
+        </Typography>
+        <Typography display="inline">
+          <strong>Levain:</strong>{" "}
+          {levain ? `${levain}g` : "Additional parameters required"}
+        </Typography>
+        <IconButton onClick={() => setLevainDialogOpen(true)}>
+          <HelpIcon fontSize="small" />
+        </IconButton>
+        {props.yeastBoost ? (
+          <Typography>
+            <strong>Instant yeast:</strong>{" "}
+            {instantYeast
+              ? `${instantYeast}g`
+              : "Additional parameters required"}
+          </Typography>
+        ) : null}
+      </Box>
+      <Divider light />
+      <Typography marginBottom={2} marginTop={2}>
         <strong>Total dough weight:</strong> {totalWeight}
-      </Text>
+        {"g"}
+      </Typography>
+      <Dialog onClose={handleCloseLevainDialog} open={levainDialogOpen}>
+        <DialogTitle>How to build your levain</DialogTitle>
+        {getLevainRecipeBlurb()}
+      </Dialog>
     </Container>
   );
 };
